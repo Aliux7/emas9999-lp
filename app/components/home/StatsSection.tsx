@@ -76,7 +76,7 @@ export function StatsSection() {
       className="w-full py-16 md:py-24"
       style={{ fontFamily: "var(--font-inter), Inter, sans-serif" }}
     >
-      <div className="grid grid-cols-2 gap-y-12 px-5 sm:px-10 md:grid-cols-4 md:gap-y-0 xl:px-20">
+      <div className="grid grid-cols-2 gap-y-12 px-5 sm:px-10 md:grid-cols-4 md:gap-y-0 xl:px-20 pt-30 sm:pt-0">
         {STATS.map((stat, i) => (
           <motion.div
             key={stat.label}

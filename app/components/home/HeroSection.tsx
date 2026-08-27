@@ -59,7 +59,7 @@ export function HeroSection() {
     >
       <div
         data-scroll
-        className="absolute z-10 mx-auto w-full max-w-6xl px-5 space-y-4 md:space-y-0 text-center uppercase sm:px-10 xl:px-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3 text-5xl sm:text-7xl md:text-8xl xl:text-9xl"
+        className="absolute z-10 mx-auto w-full max-w-6xl px-5 space-y-4 md:space-y-0 text-center uppercase sm:px-10 xl:px-20 top-1/2 left-1/2 -translate-x-1/2 translate-y-[-110%] sm:-translate-y-2/3 text-5xl sm:text-7xl md:text-8xl xl:text-9xl"
         style={{
           fontFamily: "var(--font-serif), serif",
           lineHeight: 0.95,
@@ -89,6 +89,17 @@ export function HeroSection() {
         transition={{ delay: 0.5, duration: 1.1, ease: EASE }}
         className="pointer-events-none absolute z-20 w-full inset-x-0 bottom-0"
       >
+        {/* Below sm — portrait phone composition */}
+        <Image
+          src="/hero/hero-bottom-phone.webp"
+          alt=""
+          width={1024}
+          height={1536}
+          sizes="100vw"
+          priority
+          className="block h-auto w-full sm:hidden translate-y-1/5 sm:translate-y-0"
+        />
+        {/* sm+ — landscape composition */}
         <Image
           src="/hero/hero-bottom.webp"
           alt=""
@@ -96,7 +107,7 @@ export function HeroSection() {
           height={941}
           sizes="100vw"
           priority
-          className="h-auto w-full md:translate-y-10"
+          className="hidden h-auto w-full sm:block md:translate-y-10"
         />
       </motion.div>
 
