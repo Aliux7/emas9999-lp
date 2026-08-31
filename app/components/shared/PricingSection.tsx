@@ -1,43 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { PriceRow } from "../../lib/prices";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Standard bullion weights (12) — used for both metals to produce 24 rows total.
-const WEIGHTS: { g: number; label: string }[] = [
-  { g: 0.5, label: "0,5 g" },
-  { g: 1, label: "1 g" },
-  { g: 2, label: "2 g" },
-  { g: 3, label: "3 g" },
-  { g: 5, label: "5 g" },
-  { g: 10, label: "10 g" },
-  { g: 25, label: "25 g" },
-  { g: 50, label: "50 g" },
-  { g: 100, label: "100 g" },
-  { g: 250, label: "250 g" },
-  { g: 500, label: "500 g" },
-  { g: 1000, label: "1 kg" },
-];
-
-// Per-gram rates (Indonesian rupiah). Edit these two numbers per metal to reprice the whole list.
-const GOLD_SELL = 1_750_000;
-const GOLD_BUY = 1_690_000;
-const SILVER_SELL = 20_000;
-const SILVER_BUY = 19_000;
-
 function formatIDR(n: number) {
-  return "Rp " + n.toLocaleString("id-ID");
+  return "Rp " + Math.round(n).toLocaleString("id-ID");
+}
+
+function formatWeight(g: number) {
+  if (g >= 1000) {
+    const kg = g / 1000;
+    return `${kg.toLocaleString("id-ID")} kg`;
+  }
+  return `${g.toLocaleString("id-ID")} g`;
 }
 
 function PriceColumn({
   title,
-  sellRate,
-  buyRate,
+  rows,
+  emptyLabel,
 }: {
   title: string;
-  sellRate: number;
-  buyRate: number;
+  rows: PriceRow[];
+  emptyLabel: string;
 }) {
   return (
     <motion.div
@@ -53,69 +40,94 @@ function PriceColumn({
         {title}
       </div>
 
-      {/* Column headers */}
       <div
-        className="mt-4 grid grid-cols-[minmax(0,0.7fr)_minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-x-3 border-b pb-2 text-[9px] font-semibold uppercase tracking-widest md:text-[10px]"
+        className="mt-4 grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-x-3 border-b pb-2 text-[9px] font-semibold uppercase tracking-widest md:text-[10px]"
         style={{ color: "#8b7355", borderColor: "rgba(26,19,11,0.18)" }}
       >
-        <div>Berat</div>
+        <div>Produk</div>
         <div className="text-right">Harga Jual</div>
         <div className="text-right">Harga Buyback</div>
       </div>
 
-      {/* Rows */}
       <div>
-        {WEIGHTS.map((w) => (
+        {rows.length === 0 ? (
           <div
-            key={w.g}
-            className="grid grid-cols-[minmax(0,0.7fr)_minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-x-3 border-b py-2 md:py-2.5"
-            style={{ borderColor: "rgba(26,19,11,0.06)" }}
+            className="py-6 text-[11px] font-semibold uppercase tracking-widest md:text-xs"
+            style={{ color: "#8b7355" }}
           >
-            <span
-              className="text-[11px] font-semibold uppercase tracking-widest md:text-xs"
-              style={{ color: "#1a130b" }}
-            >
-              {w.label}
-            </span>
-            <span
-              className="whitespace-nowrap text-right"
-              style={{
-                fontFamily: "var(--font-serif), serif",
-                fontSize: "clamp(0.875rem, 1.6vw, 1.15rem)",
-                fontWeight: 700,
-                color: "#1a130b",
-                lineHeight: 1.2,
-                letterSpacing: "-0.005em",
-              }}
-            >
-              {formatIDR(Math.round(w.g * sellRate))}
-            </span>
-            <span
-              className="whitespace-nowrap text-right"
-              style={{
-                fontFamily: "var(--font-serif), serif",
-                fontSize: "clamp(0.875rem, 1.6vw, 1.15rem)",
-                fontWeight: 700,
-                color: "#4D280C",
-                lineHeight: 1.2,
-                letterSpacing: "-0.005em",
-              }}
-            >
-              {formatIDR(Math.round(w.g * buyRate))}
-            </span>
+            {emptyLabel}
           </div>
-        ))}
+        ) : (
+          rows.map((r) => (
+            <div
+              key={r.id}
+              className="grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-x-3 border-b py-2 md:py-2.5"
+              style={{ borderColor: "rgba(26,19,11,0.06)" }}
+            >
+              <span
+                className="text-[11px] font-semibold uppercase tracking-widest md:text-xs"
+                style={{ color: "#1a130b" }}
+              >
+                <span
+                  className="inline-block text-right tabular-nums"
+                  style={{ width: "3.75em", marginRight: "0.75em" }}
+                >
+                  {formatWeight(r.weight)}
+                </span>
+                <span style={{ color: "#8b7355" }}>{stripWeightFromName(r.name)}</span>
+              </span>
+              <span
+                className="whitespace-nowrap text-right"
+                style={{
+                  fontFamily: "var(--font-serif), serif",
+                  fontSize: "clamp(0.875rem, 1.6vw, 1.15rem)",
+                  fontWeight: 700,
+                  color: "#1a130b",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.005em",
+                }}
+              >
+                {formatIDR(r.sell)}
+              </span>
+              <span
+                className="whitespace-nowrap text-right"
+                style={{
+                  fontFamily: "var(--font-serif), serif",
+                  fontSize: "clamp(0.875rem, 1.6vw, 1.15rem)",
+                  fontWeight: 700,
+                  color: r.buyback == null ? "#8b7355" : "#4D280C",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.005em",
+                }}
+              >
+                {r.buyback == null ? "—" : formatIDR(r.buyback)}
+              </span>
+            </div>
+          ))
+        )}
       </div>
     </motion.div>
   );
 }
 
-// Fake but plausible 30-point gold-market series (0..1000 wide, y inverted so lower y = higher price).
+// The API name already carries the weight ("Euro Gold 5gr Hydro"); strip it so the
+// weight column doesn't repeat what's shown on the left.
+function stripWeightFromName(name: string) {
+  return name.replace(/\s*\d+(?:\.\d+)?\s*(?:gr|g|kg)\b/i, "").trim();
+}
+
 const CHART_LINE =
   "M 0 200 L 34 195 L 68 192 L 103 185 L 137 189 L 172 178 L 206 175 L 241 170 L 275 165 L 310 170 L 344 155 L 379 150 L 413 145 L 448 140 L 482 142 L 517 130 L 551 125 L 586 118 L 620 115 L 655 112 L 689 110 L 724 100 L 758 95 L 793 90 L 827 88 L 862 80 L 896 75 L 931 70 L 965 60 L 1000 50";
 const CHART_AREA = `${CHART_LINE} L 1000 300 L 0 300 Z`;
 
-export function PricingSection() {
+export type PricingSectionProps = {
+  gold: PriceRow[];
+  silver: PriceRow[];
+  generatedAt: string | null;
+  error?: string;
+};
+
+export function PricingSection({ gold, silver, generatedAt, error }: PricingSectionProps) {
   return (
     <section
       data-scroll-section
@@ -161,7 +173,6 @@ export function PricingSection() {
       </svg>
 
       <div className="relative z-10 px-5 sm:px-10 xl:px-20">
-        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -193,21 +204,19 @@ export function PricingSection() {
           </h2>
         </motion.div>
 
-        {/* Two columns: Gold (12) + Silver (12) = 24 rows */}
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
           <PriceColumn
             title="Emas Batangan — 999.9 Murni"
-            sellRate={GOLD_SELL}
-            buyRate={GOLD_BUY}
+            rows={gold}
+            emptyLabel={error ? "Gagal memuat harga" : "Belum ada data"}
           />
           <PriceColumn
             title="Perak Batangan — 999.9 Murni"
-            sellRate={SILVER_SELL}
-            buyRate={SILVER_BUY}
+            rows={silver}
+            emptyLabel={error ? "Gagal memuat harga" : "Belum ada data"}
           />
         </div>
 
-        {/* Footer */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -216,9 +225,24 @@ export function PricingSection() {
           className="mt-10 text-[10px] font-semibold uppercase tracking-widest md:text-xs"
           style={{ color: "#8b7355" }}
         >
-          Harga diperbarui setiap hari
+          {generatedAt
+            ? `Harga diperbarui ${formatGeneratedAt(generatedAt)}`
+            : "Harga diperbarui setiap hari"}
         </motion.p>
       </div>
     </section>
   );
+}
+
+function formatGeneratedAt(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "setiap hari";
+  return d.toLocaleString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Jakarta",
+  }) + " WIB";
 }

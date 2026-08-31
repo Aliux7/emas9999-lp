@@ -46,7 +46,13 @@ export function Nav() {
               priority
               className="h-9 w-9 object-contain md:h-11 md:w-11"
             />
-            <span className="text-sm font-semibold uppercase tracking-widest text-black md:text-base">
+            <span
+              className="text-base font-semibold uppercase tracking-wide text-black md:text-lg"
+              style={{
+                fontFamily:
+                  'Futura, "Futura PT", "Trebuchet MS", "Century Gothic", ui-sans-serif, sans-serif',
+              }}
+            >
               Emas9999
             </span>
           </Link>
@@ -67,7 +73,7 @@ export function Nav() {
               >
                 <Link
                   href={link.href}
-                  className="text-[13px] font-semibold uppercase tracking-widest text-black transition-opacity hover:opacity-60"
+                  className="text-[14px] font-bold uppercase tracking-widest text-[#4D280C] transition-opacity hover:opacity-60"
                 >
                   {link.label}
                 </Link>

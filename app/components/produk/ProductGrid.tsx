@@ -19,6 +19,27 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
+    src: "/products/band-gold-bar.webp",
+    category: "Emas Batangan",
+    title: "Euro Gold",
+    href: SHOPEE_CATEGORY.gold,
+    objectClass: "object-[50%_30%]",
+  },
+  {
+    src: "/products/band-necklace.webp",
+    category: "Kalung",
+    title: "Kalung Perak",
+    href: SHOPEE_CATEGORY.kalung,
+    objectClass: "object-[50%_35%]",
+  },
+  {
+    src: "/products/band-silver-bar.webp",
+    category: "Perak Batangan",
+    title: "Euro Silver",
+    href: SHOPEE_CATEGORY.silver,
+    objectClass: "object-top",
+  },
+  {
     src: "/products/band-ring-1.webp",
     category: "Cincin",
     title: "Cincin Silver",
@@ -40,27 +61,6 @@ const PRODUCTS: Product[] = [
     title: "Gelang Silver",
     href: SHOPEE_CATEGORY.gelang,
     objectClass: "object-[50%_35%]",
-  },
-  {
-    src: "/products/band-gold-bar.webp",
-    category: "Emas Batangan",
-    title: "Euro Gold",
-    href: SHOPEE_CATEGORY.gold,
-    objectClass: "object-[50%_30%]",
-  },
-  {
-    src: "/products/band-necklace.webp",
-    category: "Kalung",
-    title: "Kalung Perak",
-    href: SHOPEE_CATEGORY.kalung,
-    objectClass: "object-[50%_35%]",
-  },
-  {
-    src: "/products/band-silver-bar.webp",
-    category: "Perak Batangan",
-    title: "Euro Silver",
-    href: SHOPEE_CATEGORY.silver,
-    objectClass: "object-top",
   },
 ];
 

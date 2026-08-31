@@ -8,13 +8,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 const COLLECTIONS = [
   {
-    src: "/products/band-bracelet.webp",
-    kicker: "Koleksi 01",
-    title: "Gelang Perak",
-    subtitle: "Buatan Tangan",
-    objectClass: "object-[50%_35%]",
-  },
-  {
     src: "/products/band-gold-bar.webp",
     kicker: "Koleksi 02",
     title: "Emas Batangan",
@@ -22,11 +15,11 @@ const COLLECTIONS = [
     objectClass: "object-[50%_27.5%]",
   },
   {
-    src: "/products/band-ring.webp",
+    src: "/products/band-necklace.webp",
     kicker: "Koleksi 03",
     title: "Cincin Perak",
     subtitle: "Bertahtakan Safir",
-    objectClass: "object-[50%_47.5%]",
+    objectClass: "object-[50%_55%]",
   },
   {
     src: "/products/band-silver-bar.webp",
@@ -34,6 +27,13 @@ const COLLECTIONS = [
     title: "Perak Batangan",
     subtitle: "999.9 Murni",
     objectClass: "object-[50%_32%]",
+  },
+  {
+    src: "/products/band-bracelet.webp",
+    kicker: "Koleksi 01",
+    title: "Gelang Perak",
+    subtitle: "Buatan Tangan",
+    objectClass: "object-[50%_35%]",
   },
 ] as const;
 

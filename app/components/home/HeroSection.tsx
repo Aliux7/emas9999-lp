@@ -20,7 +20,7 @@ export function HeroSection() {
             style={{ height: "0.85em" }}
           >
             <Image
-              src="/hero/discover-o.webp"
+              src="/hero/hero-bottom-phone.webp"
               alt=""
               fill
               sizes="160px"
@@ -33,10 +33,10 @@ export function HeroSection() {
     },
     { key: "indonesias-finest", content: "Indonesia’s Finest" },
     {
-      key: "jewelry",
+      key: "bullion",
       content: (
         <>
-          Jewelry
+          Bullion
           <span
             style={{
               fontSize: "0.55em",
